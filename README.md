@@ -135,19 +135,29 @@ get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/c
 
 last_elem_id = str(int(list(json.loads(get_req.text))[-1]["emp_no"]) + 1)
 
-# New element to insert
-new_elem = {
-    "emp_no": last_elem_id, 
-    "birth_date": "'1998-12-05'",
-    "first_name": "'Fernando'",
-    "last_name": "'Leira'",
-    "gender": "'M'",
-    "hire_date": "'{}'".format(CURRENT_DATE)
-}
+# New elements to insert
+new_elems = [
+    {
+        "emp_no": last_elem_id,
+        "birth_date": "'1998-12-05'",
+        "first_name": "'Fernando'",
+        "last_name": "'Leira'",
+        "gender": "'M'",
+        "hire_date": "'{}'".format(CURRENT_DATE)
+    },
+    {
+        "emp_no": str(int(last_elem_id) + 1),
+        "birth_date": "'1998-12-05'",
+        "first_name": "'Fern'",
+        "last_name": "'Leira'",
+        "gender": "'M'",
+        "hire_date": "'{}'".format(CURRENT_DATE)
+    }
+]
 
 # Create
 post_req = requests.post("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees",
-    json=new_elem,
+    json=new_elems,
     headers={
         "x-api-key": "i25gWWDscH3MSE4utckN09vtGWfdaoBM7Bo6GXiI",
     }
