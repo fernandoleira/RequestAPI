@@ -4,11 +4,94 @@ RequestAPI is a Python project built in the AWS API Gateway platform that handle
 
 ## Usage
 
-Here are some examples with differet HTTP methods
+Here are some examples with different HTTP methods
 
-### GET
+### DB GET
+
+Return the database and tables information
 
 ```python
+import requests
+
+head_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db",
+    headers={
+        "x-api-key": "i25gWWDscH3MSE4utckN09vtGWfdaoBM7Bo6GXiI"
+    }
+)
+
+print(head_req.status_code)
+print(head_req.headers)
+print(head_req.text)
+```
+
+### DB POST
+
+Write a new table in JSON and push it into the database.
+
+```python
+import requests
+
+new_table = {
+    "table-name": "NewTable",
+    "columns": [
+        {
+            "title": "Id",
+            "type": "int",
+            "null": False,
+            "primary-key": True
+        },
+        {
+            "title": "LastName",
+            "type": "varchar(255)",
+            "null": False
+        },
+        {
+            "title": "FirstName",
+            "type": "varchar(255)",
+            "null": False
+        },
+        {
+            "title": "Address",
+            "type": "varchar(255)",
+            "null": False
+        },
+        {
+            "title": "City",
+            "type": "varchar(255)",
+            "null": False
+        },
+        {
+            "title": "State",
+            "type": "varchar(255)",
+            "null": False
+        },
+        {
+            "title": "ZipCode",
+            "type": "int",
+            "null": False
+        }
+    ]
+}
+
+table_req = requests.post("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db",
+    json=new_table,
+    headers={
+        "x-api-key": "i25gWWDscH3MSE4utckN09vtGWfdaoBM7Bo6GXiI",
+    }
+)
+
+print(table_req.status_code)
+print(table_req.headers)
+print(table_req.text)
+```
+
+### TABLE and ROW GET
+
+Return all of the rows in the table (Index) or an specific one (Show).
+
+```python
+import requests
+
 # Index
 get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees",
     headers={
@@ -32,9 +115,17 @@ print(get_req.headers)
 print(get_req.text)
 ```
 
-### POST
+### TABLE POST
+
+Insert a new row into the table.
 
 ```python
+import requests
+import json
+import datetime
+
+CURRENT_DATE = datetime.datetime.today().strftime('%Y-%m-%d')
+
 # Get the last element id
 get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees", 
     headers={
@@ -67,9 +158,13 @@ print(post_req.headers)
 print(post_req.text)
 ```
 
-### PATCH
+### ROW PATCH
+
+Update a row and push it to the table.
 
 ```python
+import requests
+
 # Element columns to update
 update_elem = {
     "first_name": "'John'",
@@ -89,9 +184,13 @@ print(patch_req.headers)
 print(patch_req.text)
 ```
 
-### DELETE
+### ROW DELETE
+
+Delete a row from a table.
 
 ```python
+import requests
+
 # Destroy
 delete_req = requests.delete("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees/10115",
     headers={

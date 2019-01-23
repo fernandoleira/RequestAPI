@@ -1,5 +1,10 @@
-import datetime
+import requests
 
-date = datetime.datetime.today().strftime('%Y-%m-%d')
 
-print(date)
+head_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db",
+    headers={
+        "x-api-key": "i25gWWDscH3MSE4utckN09vtGWfdaoBM7Bo6GXiI"
+    }
+)
+
+print(head_req.text)

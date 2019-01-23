@@ -32,7 +32,8 @@ print(get_req.text)
 
 # ======================================== POST REQUEST ========================================
 
-get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees", 
+# Get the last element id
+get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees",
     headers={
         "x-api-key": "i25gWWDscH3MSE4utckN09vtGWfdaoBM7Bo6GXiI"
     }
@@ -40,8 +41,9 @@ get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/c
 
 last_elem_id = str(int(list(json.loads(get_req.text))[-1]["emp_no"]) + 1)
 
+# New element to insert
 new_elem = {
-    "emp_no": last_elem_id, 
+    "emp_no": last_elem_id,
     "birth_date": "'1998-12-05'",
     "first_name": "'Fernando'",
     "last_name": "'Leira'",
@@ -49,6 +51,7 @@ new_elem = {
     "hire_date": "'{}'".format(CURRENT_DATE)
 }
 
+# Create
 post_req = requests.post("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees",
     json=new_elem,
     headers={
@@ -62,11 +65,13 @@ print(post_req.text)
 
 # ======================================== PATCH REQUEST ========================================
 
+# Element columns to update
 update_elem = {
     "first_name": "'John'",
     "last_name": "'Smith'"
 }
 
+# Update
 patch_req = requests.patch("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees/10115",
     json=update_elem,
     headers={
@@ -80,6 +85,7 @@ print(patch_req.text)
 
 # ======================================== DELETE REQUEST ======================================
 
+# Destroy
 delete_req = requests.delete("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees/10115",
     headers={
         "x-api-key": "i25gWWDscH3MSE4utckN09vtGWfdaoBM7Bo6GXiI",
@@ -89,3 +95,58 @@ delete_req = requests.delete("https://atbqxoh3y8.execute-api.us-east-1.amazonaws
 print(delete_req.status_code)
 print(delete_req.headers)
 print(delete_req.text)
+
+# ======================================== TABLE REQUEST =======================================
+
+new_table = {
+    "table-name": "NewTable",
+    "columns": [
+        {
+            "title": "Id",
+            "type": "int",
+            "null": False,
+            "primary-key": True
+        },
+        {
+            "title": "LastName",
+            "type": "varchar(255)",
+            "null": False
+        },
+        {
+            "title": "FirstName",
+            "type": "varchar(255)",
+            "null": False
+        },
+        {
+            "title": "Address",
+            "type": "varchar(255)",
+            "null": False
+        },
+        {
+            "title": "City",
+            "type": "varchar(255)",
+            "null": False
+        },
+        {
+            "title": "State",
+            "type": "varchar(255)",
+            "null": False
+        },
+        {
+            "title": "ZipCode",
+            "type": "int",
+            "null": False
+        }
+    ]
+}
+
+table_req = requests.post("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db",
+    json=new_table,
+    headers={
+        "x-api-key": "i25gWWDscH3MSE4utckN09vtGWfdaoBM7Bo6GXiI",
+    }
+)
+
+print(table_req.status_code)
+print(table_req.headers)
+print(table_req.text)
