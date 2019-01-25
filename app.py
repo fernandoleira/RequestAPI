@@ -4,6 +4,9 @@ import datetime
 
 
 CURRENT_DATE = datetime.datetime.today().strftime('%Y-%m-%d')
+COUNT_FLAG = True
+LIMIT_FLAG = 10
+OFFSET_FLAG = 1
 
 
 # ======================================== GET REQUEST =========================================
@@ -14,12 +17,14 @@ CURRENT_DATE = datetime.datetime.today().strftime('%Y-%m-%d')
 get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees",
     headers={
         "x-api-key": "i25gWWDscH3MSE4utckN09vtGWfdaoBM7Bo6GXiI"
-    }
+    },
+    
 )
 
 print(get_req.status_code)
 print(get_req.headers)
 print(get_req.text)
+
 
 # Show
 get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees/10001",
@@ -31,6 +36,7 @@ get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/c
 print(get_req.status_code)
 print(get_req.headers)
 print(get_req.text)
+
 
 
 
@@ -193,3 +199,4 @@ table_req = requests.post("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.co
 print(table_req.status_code)
 print(table_req.headers)
 print(table_req.text)
+

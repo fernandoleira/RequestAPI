@@ -21,25 +21,21 @@ def db_connection(username, password):
     return conn
 
 
-def delete_elem_request(connection, tablename, elem_id):
+def delete_elem_request(connection, tablename, column, elem_id):
     cur = connection.cursor()
 
-    cur.execute('SELECT * FROM {}'.format(tablename))
-    col_names = [desc[0] for desc in cur.description]
-
-    cur.execute('DELETE FROM {0} WHERE {1} = {2};'.format(tablename, col_names[0], elem_id))
+    cur.execute('DELETE FROM {0} WHERE {1} = {2};'.format(tablename, column, elem_id))
 
     sm = cur.statusmessage
     cur.close()
-    return [sm, col_names, elem_id]
+    return sm
 
 
 # API Lambda function for the GET method
 def lambda_handler(event, context):
     table_name = event["params"]["path"]["table"]
+    col_name = event["params"]["path"]["col"]
     id_name = event["params"]["path"]["id"]
-    # db_user = event["header"]["x-db-user"]
-    # db_password = event["header"]["x-db-password"]
 
     # Test connection with the database
     try:
@@ -50,7 +46,7 @@ def lambda_handler(event, context):
 
     conn = db_connection(os.environ.get("DB_USERNAME"), os.environ.get("DB_PASSWORD"))
 
-    res = delete_elem_request(conn, table_name, id_name)
+    res = delete_elem_request(conn, table_name, col_name, id_name)
 
     conn.commit()
     conn.close()
