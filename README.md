@@ -6,7 +6,7 @@ RequestAPI is a Python project built in the AWS API Gateway platform that handle
 
 Here are some examples with different HTTP methods
 
-### DB GET
+### GET DB
 
 Return the database and tables information
 
@@ -24,7 +24,7 @@ print(head_req.headers)
 print(head_req.text)
 ```
 
-### DB POST
+### POST DB
 
 Write a new table in JSON and push it into the database.
 
@@ -85,7 +85,7 @@ print(table_req.headers)
 print(table_req.text)
 ```
 
-### TABLE and ROW GET
+### GET TABLE
 
 Return all of the rows in the table (Index) or an specific one (Show).
 
@@ -102,8 +102,14 @@ get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/c
 print(get_req.status_code)
 print(get_req.headers)
 print(get_req.text)
+```
 
-# Show
+### GET ELEMENT
+
+```python
+import requests
+
+# Return employee with number '10001'
 get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees/10001",
     headers={
         "x-api-key": "i25gWWDscH3MSE4utckN09vtGWfdaoBM7Bo6GXiI"
@@ -115,30 +121,20 @@ print(get_req.headers)
 print(get_req.text)
 ```
 
-### TABLE POST
+### POST TABLE 
 
-Insert a new row into the table.
+Insert a new row into a table.
 
 ```python
 import requests
 import json
 import datetime
 
-CURRENT_DATE = datetime.datetime.today().strftime('%Y-%m-%d')
-
-# Get the last element id
-get_req = requests.get("https://atbqxoh3y8.execute-api.us-east-1.amazonaws.com/comp/db/employees", 
-    headers={
-        "x-api-key": "i25gWWDscH3MSE4utckN09vtGWfdaoBM7Bo6GXiI"
-    }
-)
-
-last_elem_id = str(int(list(json.loads(get_req.text))[-1]["emp_no"]) + 1)
+CURRENT_DATE = datetime.datetime.today().strftime('%Y-%m-%d') # Get current date
 
 # New elements to insert
 new_elems = [
     {
-        "emp_no": last_elem_id,
         "birth_date": "'1998-12-05'",
         "first_name": "'Fernando'",
         "last_name": "'Leira'",
@@ -146,7 +142,6 @@ new_elems = [
         "hire_date": "'{}'".format(CURRENT_DATE)
     },
     {
-        "emp_no": str(int(last_elem_id) + 1),
         "birth_date": "'1998-12-05'",
         "first_name": "'Fern'",
         "last_name": "'Leira'",
@@ -168,7 +163,7 @@ print(post_req.headers)
 print(post_req.text)
 ```
 
-### ROW PATCH
+### PATCH ROW
 
 Update a row and push it to the table.
 
@@ -194,7 +189,7 @@ print(patch_req.headers)
 print(patch_req.text)
 ```
 
-### ROW DELETE
+### DELETE ROW
 
 Delete a row from a table.
 
@@ -211,4 +206,12 @@ delete_req = requests.delete("https://atbqxoh3y8.execute-api.us-east-1.amazonaws
 print(delete_req.status_code)
 print(delete_req.headers)
 print(delete_req.text)
+```
+
+### Flags
+
+```python
+COUNT_FLAG = True
+LIMIT_FLAG = 10
+OFFSET_FLAG = 1
 ```
